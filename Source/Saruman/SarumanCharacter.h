@@ -61,6 +61,10 @@ private:
 	/** A decal that projects to the cursor location. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UDecalComponent* CursorToWorld;
+	
+	/** A decal that projects to the cursor location. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	class UDecalComponent* CursorToWorldMarker;
 
 	virtual void PossessedBy(AController* NewController) override;
 };
