@@ -11,6 +11,7 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Materials/Material.h"
 #include "AbilitySystemComponent.h"
+#include "LightningAbilityInputID.h"
 #include "SarumanAttributeSet.h"
 #include "Engine/World.h"
 
@@ -77,6 +78,7 @@ ASarumanCharacter::ASarumanCharacter()
 	// Mixed mode means we only are replicated the GEs to ourself, not the GEs to simulated proxies. If another GDPlayerState (Hero) receives a GE,
 	// we won't be told about it by the Server. Attributes, GameplayTags, and GameplayCues will still replicate to us.
 	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	
 }
 
 void ASarumanCharacter::BeginPlay()
@@ -88,6 +90,12 @@ void ASarumanCharacter::BeginPlay()
 		GiveAbilities();
 		InitAttributes();
 		AbilitySystem->InitAbilityActorInfo(this, this);
+		if(InputComponent)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Binding Confirm / Cancel Input"));    
+			AbilitySystem->BindAbilityActivationToInputComponent(InputComponent, FGameplayAbilityInputBinds(FString("Confirm"), FString("Cancel"), FString("LightningAbilityInputID"), static_cast<int32>(LightningAbilityInputID::Confirm), static_cast<int32>(LightningAbilityInputID::Cancel)));
+		}
+		//AbilitySystem->BindAbilityActivationToInputComponent(GetController()->InputComponent, FGameplayAbilityInputBinds(FString("ConfirmTarget"), FString("CancelTarget"), FString("LightningAbilityInputID"), static_cast<int32>(LightningAbilityInputID::Confirm), static_cast<int32>(LightningAbilityInputID::Cancel)));
 	}
 }
 
