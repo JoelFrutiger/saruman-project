@@ -9,6 +9,8 @@
 
 #include "SarumanCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCharacterBaseHitReactDelegate);
+
 UCLASS(Blueprintable)
 class ASarumanCharacter : public ACharacter, public IAbilitySystemInterface
 {
@@ -30,6 +32,14 @@ public:
 	FORCEINLINE class UDecalComponent* GetCursorToWorld() { return CursorToWorld; }
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	UPROPERTY(BlueprintAssignable, Category = "SarumanEvents")
+	FCharacterBaseHitReactDelegate ShowHitReact;
+	
+	UFUNCTION(NetMulticast, Reliable, WithValidation)
+	virtual void PlayHitReact();
+	virtual void PlayHitReact_Implementation();
+	virtual bool PlayHitReact_Validate();
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Abilities", meta = (AllowPrivateAccess = "true"))

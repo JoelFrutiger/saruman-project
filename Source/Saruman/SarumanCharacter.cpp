@@ -140,6 +140,16 @@ UAbilitySystemComponent* ASarumanCharacter::GetAbilitySystemComponent() const
 	return AbilitySystem;
 }
 
+void ASarumanCharacter::PlayHitReact_Implementation()
+{
+	ShowHitReact.Broadcast();
+}
+
+bool ASarumanCharacter::PlayHitReact_Validate()
+{
+	return true;
+}
+
 void ASarumanCharacter::InitAttributes()
 {
 	if (!HasAuthority())

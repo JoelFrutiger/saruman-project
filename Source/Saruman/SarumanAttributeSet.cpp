@@ -4,6 +4,7 @@
 #include "SarumanAttributeSet.h"
 #include "GameplayEffectExtension.h"
 #include "Net/UnrealNetwork.h"
+#include "SarumanCharacter.h"
 
 USarumanAttributeSet::USarumanAttributeSet()
 {
@@ -43,7 +44,17 @@ void USarumanAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCal
         const float health = GetHealth() - dmg;
         const float newHealth = FMath::Clamp(health, 0.0f, GetMaxHealth());
         SetHealth(newHealth);
-        
+
+        const auto TargetActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+    	if(TargetActor)
+    	{
+			auto TargetSaruman = Cast<ASarumanCharacter>(TargetActor);
+    		if(TargetSaruman)
+    		{
+                TargetSaruman->PlayHitReact();
+    		}
+    	}
+    	
         if(GEngine)
             GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, FString::Printf(TEXT("%s damage:%f newHealth:%f"), *Data.Target.GetOwner()->GetName(), dmg,  newHealth));
     }
